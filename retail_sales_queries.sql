@@ -38,3 +38,50 @@ GROUP BY Region;
 SELECT *
 FROM Sales
 WHERE ProductName = 'Laptop';
+
+--Query 5: Sales by Product
+
+SELECT ProductName,
+       SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY ProductName
+ORDER BY TotalSales DESC;
+
+--Query 6: Region with Highest Sales
+
+SELECT TOP 1
+       Region,
+       SUM(SalesAmount) AS TotalSales
+FROM Sales
+GROUP BY Region
+ORDER BY TotalSales DESC;
+
+--Query 7: Average Sales by Product
+
+SELECT ProductName,
+       AVG(SalesAmount) AS AvgSales
+FROM Sales
+GROUP BY ProductName;
+
+--Query 8: Ranking Products using Window Function
+
+SELECT ProductName,
+       SUM(SalesAmount) AS TotalSales,
+       RANK() OVER (
+           ORDER BY SUM(SalesAmount) DESC
+       ) AS SalesRank
+FROM Sales
+GROUP BY ProductName;
+
+--Query 9: CTE Example
+
+WITH ProductSales AS
+(
+    SELECT ProductName,
+           SUM(SalesAmount) AS TotalSales
+    FROM Sales
+    GROUP BY ProductName
+)
+SELECT *
+FROM ProductSales
+WHERE TotalSales > 50000;
